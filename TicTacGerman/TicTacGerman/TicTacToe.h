@@ -9,17 +9,28 @@ class CTicTacToe : public QObject
 public:
     explicit CTicTacToe(QObject *parent = 0);
     int startGame();
+
     bool getIsStarted();
     void setIsStated(bool pIsStarted);
-    void blblblblblb();
-    void blablabubbb(int a, int b);
+
+    void setPlayerName(int, QString);
+    QString getPlayerName(int pNumber);
+
+    void setPlayerCheckBoxState(int, Qt::CheckState);
+    Qt::CheckState getPlayerCheckBoxState(int);
+
+    QString getPlayerCheckBoxStateString(int pNumber);
 signals:
     
 public slots:
 
 private:
     bool isStarted;
-    
+    QString playerName1;
+    QString playerName2;
+    Qt::CheckState playerCheckBoxState1;
+    Qt::CheckState playerCheckBoxState2;
+
 };
 
 #endif // TICTACTOE_H

@@ -22,11 +22,13 @@ public:
     CTicTacToe* getTicTacToeInstance();
     CMainWindowFormFuncs* getMWFFInstace();
 private slots:
-    void on_lineEditSymbol1_editingFinished();
 
     void on_pushButtonSave_clicked();
 
-    void on_lineEditSymbol2_editingFinished();
+
+    void on_checkBoxSymbol1_clicked();
+
+    void on_checkBoxSymbol2_clicked();
 
 private:
     Ui::CMainWindow *ui;

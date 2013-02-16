@@ -5,7 +5,7 @@ CMainWindowFormFuncs::CMainWindowFormFuncs(QObject *parent) :
 {
 }
 
-
+/*
 QString CMainWindowFormFuncs::setValidSymbolLineEdit(QLineEdit *lineEdit)
 {
 
@@ -21,3 +21,4 @@ QString CMainWindowFormFuncs::setValidSymbolLineEdit(QLineEdit *lineEdit)
     }
     return text;
 }
+*/

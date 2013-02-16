@@ -9,7 +9,7 @@ class CMainWindowFormFuncs : public QObject
     Q_OBJECT
 public:
     explicit CMainWindowFormFuncs(QObject *parent = 0);
-    QString setValidSymbolLineEdit(QLineEdit *lineEdit);
+  //  QString setValidSymbolLineEdit(QLineEdit *lineEdit);
 signals:
     
 public slots:
