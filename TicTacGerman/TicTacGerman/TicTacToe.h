@@ -20,6 +20,9 @@ public:
     Qt::CheckState getPlayerCheckBoxState(int);
 
     QString getPlayerCheckBoxStateString(int pNumber);
+
+    int getPlayerPlay();
+    void setPlayerPlay(int);
 signals:
     
 public slots:
@@ -30,6 +33,8 @@ private:
     QString playerName2;
     Qt::CheckState playerCheckBoxState1;
     Qt::CheckState playerCheckBoxState2;
+
+    int playerPlay;
 
 };
 

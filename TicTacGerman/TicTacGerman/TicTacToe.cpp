@@ -24,6 +24,15 @@ void CTicTacToe::setIsStated(bool pIsStarted)
     isStarted = pIsStarted;
 }
 
+void CTicTacToe::setPlayerPlay(int pNumber)
+{
+    playerPlay = pNumber;
+}
+
+int CTicTacToe::getPlayerPlay()
+{
+    return playerPlay;
+}
 
 void CTicTacToe::setPlayerName(int pNumber, QString pName)
 {
