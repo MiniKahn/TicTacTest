@@ -210,32 +210,6 @@ Spieler2: Name:                                                                 
      <string>Save und Go!</string>
     </property>
    </widget>
-   <widget class="QRadioButton" name="radioButtonTest">
-    <property name="geometry">
-     <rect>
-      <x>430</x>
-      <y>180</y>
-      <width>82</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>RadioButton</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="checkBox">
-    <property name="geometry">
-     <rect>
-      <x>390</x>
-      <y>90</y>
-      <width>70</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>CheckBox</string>
-    </property>
-   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
