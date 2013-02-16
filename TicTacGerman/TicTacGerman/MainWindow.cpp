@@ -20,6 +20,7 @@ CMainWindow::~CMainWindow()
     delete ui;
 }
 
+
 CMainWindowFormFuncs* CMainWindow::getMWFFInstace()
 {
     return &mainWindowFormFuncsInstance;
@@ -76,7 +77,7 @@ void CMainWindow::on_pushButtonSave_clicked()
 
             ui->textEditLog->append("Informationen ueber Spieler Nummer 1:\nSpieler Name: " + getTicTacToeInstance()->getPlayerName(1) + "\nSpieler Symbol: " + getTicTacToeInstance()->getPlayerCheckBoxStateString(1));
             ui->textEditLog->append("Informationen ueber Spieler Nummer 2:\nSpieler Name: " + getTicTacToeInstance()->getPlayerName(2) + "\nSpieler Symbol: " + getTicTacToeInstance()->getPlayerCheckBoxStateString(2));
-
+            getTicTacToeInstance()->setPlayerPlay(1, ui);
     } else {
 
         ui->lineEditName1->setReadOnly(false);

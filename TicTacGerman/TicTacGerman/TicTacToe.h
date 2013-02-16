@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "stdafx.h"
+#include "ui_MainWindow.h"
 class CTicTacToe : public QObject
 {
     Q_OBJECT
@@ -22,7 +23,7 @@ public:
     QString getPlayerCheckBoxStateString(int pNumber);
 
     int getPlayerPlay();
-    void setPlayerPlay(int);
+    void setPlayerPlay(int, Ui::CMainWindow*);
 signals:
     
 public slots:

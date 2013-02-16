@@ -1,5 +1,4 @@
 #include "TicTacToe.h"
-
 CTicTacToe::CTicTacToe(QObject *parent) :
     QObject(parent)
 {
@@ -24,9 +23,11 @@ void CTicTacToe::setIsStated(bool pIsStarted)
     isStarted = pIsStarted;
 }
 
-void CTicTacToe::setPlayerPlay(int pNumber)
+void CTicTacToe::setPlayerPlay(int pNumber, Ui::CMainWindow* ui)
 {
     playerPlay = pNumber;
+    ui->textEditLog->append(getPlayerName(pNumber) + " ist nun am Zug.");
+
 }
 
 int CTicTacToe::getPlayerPlay()
