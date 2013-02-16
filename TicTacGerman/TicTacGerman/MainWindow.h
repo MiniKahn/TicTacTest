@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QString>
 #include <QLineEdit>
+#include <QMessageBox>
 #include "TicTacToe.h"
 #include "MainWindowFormFuncs.h"
 #include "stdafx.h"
@@ -25,6 +26,7 @@ private slots:
 
     void on_pushButtonSave_clicked();
 
+    void selectedCheckBoxCheck();
 
     void on_checkBoxSymbol1_clicked();
 

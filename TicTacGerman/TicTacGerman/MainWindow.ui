@@ -251,5 +251,25 @@ Spieler2: Name:                                                                 
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>checkBox_1</sender>
+   <signal>clicked()</signal>
+   <receiver>CMainWindow</receiver>
+   <slot>selectedCheckBoxCheck()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>138</x>
+     <y>176</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>190</x>
+     <y>210</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>selectedCheckBoxCheck()</slot>
+ </slots>
 </ui>

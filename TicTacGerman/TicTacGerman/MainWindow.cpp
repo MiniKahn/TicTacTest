@@ -75,8 +75,9 @@ void CMainWindow::on_pushButtonSave_clicked()
             getTicTacToeInstance()->setPlayerCheckBoxState(1,ui->checkBoxSymbol1->checkState());
             getTicTacToeInstance()->setPlayerCheckBoxState(2,ui->checkBoxSymbol2->checkState());
 
-            ui->textEditLog->append("Informationen ueber Spieler Nummer 1:\nSpieler Name: " + getTicTacToeInstance()->getPlayerName(1) + "\nSpieler Symbol: " + getTicTacToeInstance()->getPlayerCheckBoxStateString(1));
-            ui->textEditLog->append("Informationen ueber Spieler Nummer 2:\nSpieler Name: " + getTicTacToeInstance()->getPlayerName(2) + "\nSpieler Symbol: " + getTicTacToeInstance()->getPlayerCheckBoxStateString(2));
+            ui->textEditLog->append("Informationen ueber Spieler Nummer 1:\nSpieler Name: " + getTicTacToeInstance()->getPlayerName(1) + "\nSpieler Symbol: " + getTicTacToeInstance()->getPlayerCheckBoxStateString(1) + "\n");
+            ui->textEditLog->append("Informationen ueber Spieler Nummer 2:\nSpieler Name: " + getTicTacToeInstance()->getPlayerName(2) + "\nSpieler Symbol: " + getTicTacToeInstance()->getPlayerCheckBoxStateString(2)+ "\n");
+
             getTicTacToeInstance()->setPlayerPlay(1, ui);
     } else {
 
@@ -101,6 +102,13 @@ void CMainWindow::on_pushButtonSave_clicked()
 
 }
 
+void CMainWindow::selectedCheckBoxCheck()
+{
+    MessageBox(NULL,L"a", L"b", NULL);
+    QMessageBox mb;
+    mb.setText( QObject::sender()->objectName());
+    mb.exec();
+}
 
 void CMainWindow::on_checkBoxSymbol1_clicked()
 {
