@@ -12,7 +12,7 @@ public:
     bool getIsStarted();
     void setIsStated(bool pIsStarted);
     void blblblblblb();
-    void blablabubbb(int a);
+    void blablabubbb(int a, int b);
 signals:
     
 public slots:
