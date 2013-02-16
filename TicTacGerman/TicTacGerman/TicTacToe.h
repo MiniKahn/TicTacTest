@@ -11,6 +11,7 @@ public:
     int startGame();
     bool getIsStarted();
     void setIsStated(bool pIsStarted);
+    void blablabubbb(int a);
 signals:
     
 public slots:
