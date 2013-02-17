@@ -6,12 +6,9 @@ CMainWindow::CMainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->textEditLog->setReadOnly(true);
-    ui->textEditLog->append("TEST!");
-    ui->textEditLog->append("TEST!");
-    ui->textEditLog->append("TEST!");
-    ui->textEditLog->append("TEST!");
+    ui->textEditLog->append("Willkommen bei TicTacToe von MiniKahn");
+    getTicTacToeInstance()->startGame(ui);
 
-    getTicTacToeInstance()->startGame();
 }
 
 
@@ -30,88 +27,36 @@ CTicTacToe* CMainWindow::getTicTacToeInstance()
 {
     return &ticTacToeInstance;
 }
-/*
-void CMainWindow::on_lineEditSymbol1_editingFinished()
-{
-    getMWFFInstace()->setValidSymbolLineEdit(ui->lineEditSymbol1);
-}
-
-void CMainWindow::on_lineEditSymbol2_editingFinished()
-{
-    getMWFFInstace()->setValidSymbolLineEdit(ui->lineEditSymbol2);
-}
-*/
-
-
 
 
 void CMainWindow::on_pushButtonSave_clicked()
 {
-    if (ticTacToeInstance.getIsStarted() == false) {
-        if ( ui->lineEditName1->text().isEmpty() == true ||
-             ui->lineEditName2->text().isEmpty() == true ||
-             ui->checkBoxSymbol1->checkState() == Qt::Unchecked == true) {
-            MessageBox(NULL, L"Eines der Objekte wurde nicht ausgefüllt.", L"Error!", MB_ICONERROR);
-            return;
-        }
-
-            ui->lineEditName1->setReadOnly(true);
-            ui->lineEditName1->setDisabled(true);
-
-            ui->lineEditName2->setReadOnly(true);
-            ui->lineEditName2->setDisabled(true);
-
-            ui->checkBoxSymbol1->setDisabled(true);
-            ui->checkBoxSymbol2->setDisabled(true);
-
-            getTicTacToeInstance()->setIsStated(true);
-            ui->pushButtonSave->setText("Spiel Beenden");
-            ui->textEditLog->clear();
-            ui->textEditLog->append("Das Spiel kann beginnen...");
-
-
-            getTicTacToeInstance()->setPlayerName(1,ui->lineEditName1->text());
-            getTicTacToeInstance()->setPlayerName(2,ui->lineEditName2->text());
-            getTicTacToeInstance()->setPlayerCheckBoxState(1,ui->checkBoxSymbol1->checkState());
-            getTicTacToeInstance()->setPlayerCheckBoxState(2,ui->checkBoxSymbol2->checkState());
-
-            ui->textEditLog->append("Informationen ueber Spieler Nummer 1:\nSpieler Name: " + getTicTacToeInstance()->getPlayerName(1) + "\nSpieler Symbol: " + getTicTacToeInstance()->getPlayerCheckBoxStateString(1) + "\n");
-            ui->textEditLog->append("Informationen ueber Spieler Nummer 2:\nSpieler Name: " + getTicTacToeInstance()->getPlayerName(2) + "\nSpieler Symbol: " + getTicTacToeInstance()->getPlayerCheckBoxStateString(2)+ "\n");
-
-            getTicTacToeInstance()->setPlayerPlay(1, ui);
-    } else {
-
-        ui->lineEditName1->setReadOnly(false);
-        ui->lineEditName1->setDisabled(false);
-
-        ui->lineEditName2->setReadOnly(false);
-        ui->lineEditName2->setDisabled(false);
-
-        ui->checkBoxSymbol1->setDisabled(false);
-        ui->checkBoxSymbol2->setDisabled(false);
-
-        getTicTacToeInstance()->setIsStated(false);
-        ui->pushButtonSave->setText("Save && GO");
-        ui->textEditLog->append("Das Spiel wurde beendet.");
-
-        ui->lineEditName1->clear();
-        ui->lineEditName2->clear();
-        ui->checkBoxSymbol1->setCheckState(Qt::Unchecked);
-        ui->checkBoxSymbol2->setCheckState(Qt::Unchecked);
-    }
-
+    /*
+     *Slot von pushButtonSave:
+     *Beendet oder Startet das Spiel.
+     */
+    getTicTacToeInstance()->toggleGameField(ui);
 }
 
 void CMainWindow::selectedCheckBoxCheck()
 {
-    MessageBox(NULL,L"a", L"b", NULL);
-    QMessageBox mb;
-    mb.setText( QObject::sender()->objectName());
-    mb.exec();
+    /*
+     *Gemeinsamer Slot von checkbox_1 bis checkbox_9
+     *
+     *Checkt Spielfeld ob gewonnen oder unentschieden.
+     */
+    getTicTacToeInstance()->checkGameState(ui, QObject::sender());
+
 }
 
 void CMainWindow::on_checkBoxSymbol1_clicked()
 {
+    /*
+     *Slot von checkBoxSymbol1:
+     *Setzt checkBoxSymbol1 auf Hacken oder Box, niemals unchecked.
+     *Setzt checkBoxSymbol2 auf das ENtgegengesetzte von checkBoxSymbol1
+     *
+     */
     if (ui->checkBoxSymbol1->checkState() == Qt::PartiallyChecked
             || ui->checkBoxSymbol1->checkState() == Qt::Unchecked)  {
 
@@ -126,6 +71,12 @@ void CMainWindow::on_checkBoxSymbol1_clicked()
 
 void CMainWindow::on_checkBoxSymbol2_clicked()
 {
+    /*
+     *Slot von checkBoxSymbol2:
+     *Setzt checkBoxSymbol2 auf Hacken oder Box, niemals unchecked.
+     *Setzt checkBoxSymbol1 auf das ENtgegengesetzte von checkBoxSymbol1
+     *
+     */
     if (ui->checkBoxSymbol2->checkState() == Qt::PartiallyChecked
             || ui->checkBoxSymbol2->checkState() == Qt::Unchecked) {
 

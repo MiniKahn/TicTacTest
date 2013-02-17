@@ -250,6 +250,23 @@ Spieler2: Name:                                                                 
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>checkBox_7</tabstop>
+  <tabstop>checkBoxSymbol1</tabstop>
+  <tabstop>checkBoxSymbol2</tabstop>
+  <tabstop>pushButtonSave</tabstop>
+  <tabstop>checkBox_1</tabstop>
+  <tabstop>checkBox_2</tabstop>
+  <tabstop>checkBox_3</tabstop>
+  <tabstop>lineEditName2</tabstop>
+  <tabstop>checkBox_5</tabstop>
+  <tabstop>checkBox_6</tabstop>
+  <tabstop>lineEditName1</tabstop>
+  <tabstop>checkBox_8</tabstop>
+  <tabstop>checkBox_4</tabstop>
+  <tabstop>checkBox_9</tabstop>
+  <tabstop>textEditLog</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
@@ -263,8 +280,136 @@ Spieler2: Name:                                                                 
      <y>176</y>
     </hint>
     <hint type="destinationlabel">
-     <x>190</x>
+     <x>134</x>
+     <y>214</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_3</sender>
+   <signal>clicked()</signal>
+   <receiver>CMainWindow</receiver>
+   <slot>selectedCheckBoxCheck()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>368</x>
+     <y>185</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>385</x>
      <y>210</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_2</sender>
+   <signal>clicked()</signal>
+   <receiver>CMainWindow</receiver>
+   <slot>selectedCheckBoxCheck()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>243</x>
+     <y>179</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>247</x>
+     <y>210</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_5</sender>
+   <signal>clicked()</signal>
+   <receiver>CMainWindow</receiver>
+   <slot>selectedCheckBoxCheck()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>242</x>
+     <y>268</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>251</x>
+     <y>293</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_6</sender>
+   <signal>clicked()</signal>
+   <receiver>CMainWindow</receiver>
+   <slot>selectedCheckBoxCheck()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>372</x>
+     <y>264</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>439</x>
+     <y>263</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_4</sender>
+   <signal>clicked()</signal>
+   <receiver>CMainWindow</receiver>
+   <slot>selectedCheckBoxCheck()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>131</x>
+     <y>259</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>75</x>
+     <y>268</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_7</sender>
+   <signal>clicked()</signal>
+   <receiver>CMainWindow</receiver>
+   <slot>selectedCheckBoxCheck()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>133</x>
+     <y>341</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>58</x>
+     <y>340</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_8</sender>
+   <signal>clicked()</signal>
+   <receiver>CMainWindow</receiver>
+   <slot>selectedCheckBoxCheck()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>245</x>
+     <y>343</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>257</x>
+     <y>355</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_9</sender>
+   <signal>clicked()</signal>
+   <receiver>CMainWindow</receiver>
+   <slot>selectedCheckBoxCheck()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>375</x>
+     <y>339</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>476</x>
+     <y>342</y>
     </hint>
    </hints>
   </connection>

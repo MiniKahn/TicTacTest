@@ -4,7 +4,6 @@
 #include <QMainWindow>
 #include <QString>
 #include <QLineEdit>
-#include <QMessageBox>
 #include "TicTacToe.h"
 #include "MainWindowFormFuncs.h"
 #include "stdafx.h"
@@ -16,7 +15,7 @@ class CMainWindow;
 class CMainWindow : public QMainWindow
 {
     Q_OBJECT
-    
+
 public:
     explicit CMainWindow(QWidget *parent = 0);
     ~CMainWindow();

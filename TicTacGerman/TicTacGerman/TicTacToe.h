@@ -9,7 +9,7 @@ class CTicTacToe : public QObject
     Q_OBJECT
 public:
     explicit CTicTacToe(QObject *parent = 0);
-    int startGame();
+    int startGame(Ui::CMainWindow* ui);
 
     bool getIsStarted();
     void setIsStated(bool pIsStarted);
@@ -24,12 +24,22 @@ public:
 
     int getPlayerPlay();
     void setPlayerPlay(int, Ui::CMainWindow*);
+
+
+    void setPlayableFields(int pAnzahl);
+    int getPlayableFields();
+    void toggleGameField(Ui::CMainWindow* ui);
+    void gameEnded(Ui::CMainWindow* ui, bool pDraw = false);
+
+
+    void checkGameState(Ui::CMainWindow* ui, QObject* sender);
 signals:
     
 public slots:
 
 private:
     bool isStarted;
+    int playableFields;
     QString playerName1;
     QString playerName2;
     Qt::CheckState playerCheckBoxState1;
