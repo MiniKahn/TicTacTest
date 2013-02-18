@@ -26,14 +26,14 @@ int CTicTacToe::startGame(Ui::CMainWindow* ui)
     return 0;
 }
 
-void CTicTacToe::gameEnded(Ui::CMainWindow* ui, bool pDraw)
+bool CTicTacToe::gameEnded(Ui::CMainWindow* ui, bool pDraw)
 {
     /*
      *Param1: Pointer zu ui
      *Optional Param2: ob Spiel Unentschieden Endete ( 0 / 9 Felder frei )
      *
      *Disabled Spielfeld.
-     *
+     *return true;
      */
     toggleGameField(ui);
     ui->textEditLog->clear();
@@ -45,6 +45,7 @@ void CTicTacToe::gameEnded(Ui::CMainWindow* ui, bool pDraw)
         ui->textEditLog->append("Das Spiel Endet Unentschieden!");
     }
     setIsStated(false);
+    return true;
 }
 
 bool CTicTacToe::getIsStarted()
@@ -168,124 +169,80 @@ void CTicTacToe::checkGameState(Ui::CMainWindow *ui, QObject *sender)
     setPlayableFields(getPlayableFields()-1);
 
     QString senderName = sender->objectName();
+    bool isEnde = false;
     if (senderName == ui->checkBox_1->objectName())
     {
-        if (ui->checkBox_1->checkState() == pCheckState && ui->checkBox_2->checkState() == pCheckState && ui->checkBox_3->checkState() == pCheckState)
+        if (ui->checkBox_1->checkState() == pCheckState && ui->checkBox_2->checkState() == pCheckState && ui->checkBox_3->checkState() == pCheckState ||
+            ui->checkBox_1->checkState() == pCheckState && ui->checkBox_5->checkState() == pCheckState && ui->checkBox_9->checkState() == pCheckState ||
+            ui->checkBox_1->checkState() == pCheckState && ui->checkBox_4->checkState() == pCheckState && ui->checkBox_7->checkState() == pCheckState  )
         {
-            gameEnded(ui);
-        } else if (ui->checkBox_1->checkState() == pCheckState && ui->checkBox_5->checkState() == pCheckState && ui->checkBox_9->checkState() == pCheckState)
-        {
-            gameEnded(ui);
-
-        } else if (ui->checkBox_1->checkState() == pCheckState && ui->checkBox_4->checkState() == pCheckState && ui->checkBox_7->checkState() == pCheckState)
-        {
-            gameEnded(ui);
-
+           isEnde = gameEnded(ui);
         }
     } else if (senderName == ui->checkBox_2->objectName())
     {
-        if (ui->checkBox_1->checkState() == pCheckState && ui->checkBox_2->checkState() == pCheckState && ui->checkBox_3->checkState() == pCheckState)
+        if (ui->checkBox_1->checkState() == pCheckState && ui->checkBox_2->checkState() == pCheckState && ui->checkBox_3->checkState() == pCheckState ||
+            ui->checkBox_2->checkState() == pCheckState && ui->checkBox_5->checkState() == pCheckState && ui->checkBox_8->checkState() == pCheckState  )
         {
-            gameEnded(ui);
-
-        } else if (ui->checkBox_2->checkState() == pCheckState && ui->checkBox_5->checkState() == pCheckState && ui->checkBox_8->checkState() == pCheckState)
-        {
-            gameEnded(ui);
-
+           isEnde = gameEnded(ui);
         }
     } else if (senderName == ui->checkBox_3->objectName())
     {
-        if (ui->checkBox_1->checkState() == pCheckState && ui->checkBox_2->checkState() == pCheckState && ui->checkBox_3->checkState() == pCheckState)
+        if (ui->checkBox_1->checkState() == pCheckState && ui->checkBox_2->checkState() == pCheckState && ui->checkBox_3->checkState() == pCheckState ||
+            ui->checkBox_3->checkState() == pCheckState && ui->checkBox_6->checkState() == pCheckState && ui->checkBox_9->checkState() == pCheckState ||
+            ui->checkBox_3->checkState() == pCheckState && ui->checkBox_5->checkState() == pCheckState && ui->checkBox_7->checkState() == pCheckState  )
         {
-            gameEnded(ui);
-
-        } else if (ui->checkBox_3->checkState() == pCheckState && ui->checkBox_6->checkState() == pCheckState && ui->checkBox_9->checkState() == pCheckState)
-        {
-            gameEnded(ui);
-
-        } else if (ui->checkBox_3->checkState() == pCheckState && ui->checkBox_5->checkState() == pCheckState && ui->checkBox_7->checkState() == pCheckState)
-        {
-            gameEnded(ui);
-
+            isEnde = gameEnded(ui);
         }
     } else if (senderName == ui->checkBox_4->objectName())
     {
-        if (ui->checkBox_1->checkState() == pCheckState && ui->checkBox_4->checkState() == pCheckState && ui->checkBox_7->checkState() == pCheckState)
+        if (ui->checkBox_1->checkState() == pCheckState && ui->checkBox_4->checkState() == pCheckState && ui->checkBox_7->checkState() == pCheckState ||
+            ui->checkBox_4->checkState() == pCheckState && ui->checkBox_5->checkState() == pCheckState && ui->checkBox_6->checkState() == pCheckState  )
         {
-            gameEnded(ui);
-
-        } else if (ui->checkBox_4->checkState() == pCheckState && ui->checkBox_5->checkState() == pCheckState && ui->checkBox_6->checkState() == pCheckState)
-        {
-            gameEnded(ui);
+            isEnde = gameEnded(ui);
 
         }
     } else if (senderName == ui->checkBox_5->objectName())
     {
-        if (ui->checkBox_4->checkState() == pCheckState && ui->checkBox_5->checkState() == pCheckState && ui->checkBox_6->checkState() == pCheckState)
+        if (ui->checkBox_4->checkState() == pCheckState && ui->checkBox_5->checkState() == pCheckState && ui->checkBox_6->checkState() == pCheckState ||
+            ui->checkBox_1->checkState() == pCheckState && ui->checkBox_5->checkState() == pCheckState && ui->checkBox_9->checkState() == pCheckState ||
+            ui->checkBox_3->checkState() == pCheckState && ui->checkBox_5->checkState() == pCheckState && ui->checkBox_7->checkState() == pCheckState  )
         {
-            gameEnded(ui);
-
-        } else if (ui->checkBox_1->checkState() == pCheckState && ui->checkBox_5->checkState() == pCheckState && ui->checkBox_9->checkState() == pCheckState)
-        {
-            gameEnded(ui);
-
-        } else if (ui->checkBox_3->checkState() == pCheckState && ui->checkBox_5->checkState() == pCheckState && ui->checkBox_7->checkState() == pCheckState)
-        {
-            gameEnded(ui);
-
+            isEnde = gameEnded(ui);
         }
     } else if (senderName == ui->checkBox_6->objectName())
     {
-        if (ui->checkBox_4->checkState() == pCheckState && ui->checkBox_5->checkState() == pCheckState && ui->checkBox_6->checkState() == pCheckState)
+        if (ui->checkBox_4->checkState() == pCheckState && ui->checkBox_5->checkState() == pCheckState && ui->checkBox_6->checkState() == pCheckState ||
+            ui->checkBox_3->checkState() == pCheckState && ui->checkBox_6->checkState() == pCheckState && ui->checkBox_9->checkState() == pCheckState)
         {
-            gameEnded(ui);
-
-        } else if (ui->checkBox_3->checkState() == pCheckState && ui->checkBox_6->checkState() == pCheckState && ui->checkBox_9->checkState() == pCheckState)
-        {
-            gameEnded(ui);
-
+            isEnde = gameEnded(ui);
         }
     } else if (senderName == ui->checkBox_7->objectName())
     {
-        if (ui->checkBox_7->checkState() == pCheckState && ui->checkBox_8->checkState() == pCheckState && ui->checkBox_9->checkState() == pCheckState)
+        if (ui->checkBox_7->checkState() == pCheckState && ui->checkBox_8->checkState() == pCheckState && ui->checkBox_9->checkState() == pCheckState ||
+            ui->checkBox_1->checkState() == pCheckState && ui->checkBox_4->checkState() == pCheckState && ui->checkBox_7->checkState() == pCheckState ||
+            ui->checkBox_3->checkState() == pCheckState && ui->checkBox_5->checkState() == pCheckState && ui->checkBox_7->checkState() == pCheckState )
         {
-            gameEnded(ui);
-
-        } else if (ui->checkBox_1->checkState() == pCheckState && ui->checkBox_4->checkState() == pCheckState && ui->checkBox_7->checkState() == pCheckState)
-        {
-            gameEnded(ui);
-
-        } else if (ui->checkBox_3->checkState() == pCheckState && ui->checkBox_5->checkState() == pCheckState && ui->checkBox_7->checkState() == pCheckState)
-        {
-            gameEnded(ui);
-
+            isEnde = gameEnded(ui);
         }
     } else if (senderName == ui->checkBox_8->objectName())
     {
-        if (ui->checkBox_7->checkState() == pCheckState && ui->checkBox_8->checkState() == pCheckState && ui->checkBox_9->checkState() == pCheckState)
+        if (ui->checkBox_7->checkState() == pCheckState && ui->checkBox_8->checkState() == pCheckState && ui->checkBox_9->checkState() == pCheckState ||
+            ui->checkBox_2->checkState() == pCheckState && ui->checkBox_5->checkState() == pCheckState && ui->checkBox_8->checkState() == pCheckState)
         {
-            gameEnded(ui);
-
-        } else if (ui->checkBox_2->checkState() == pCheckState && ui->checkBox_5->checkState() == pCheckState && ui->checkBox_8->checkState() == pCheckState)
-        {
-            gameEnded(ui);
-
+            isEnde = gameEnded(ui);
         }
     } else if (senderName == ui->checkBox_9->objectName())
     {
-        if (ui->checkBox_7->checkState() == pCheckState && ui->checkBox_8->checkState() == pCheckState && ui->checkBox_9->checkState() == pCheckState)
+        if (ui->checkBox_7->checkState() == pCheckState && ui->checkBox_8->checkState() == pCheckState && ui->checkBox_9->checkState() == pCheckState ||
+            ui->checkBox_1->checkState() == pCheckState && ui->checkBox_5->checkState() == pCheckState && ui->checkBox_9->checkState() == pCheckState ||
+            ui->checkBox_3->checkState() == pCheckState && ui->checkBox_6->checkState() == pCheckState && ui->checkBox_9->checkState() == pCheckState)
         {
-            gameEnded(ui);
-
-        } else if (ui->checkBox_1->checkState() == pCheckState && ui->checkBox_5->checkState() == pCheckState && ui->checkBox_9->checkState() == pCheckState)
-        {
-            gameEnded(ui);
-
-        } else if (ui->checkBox_3->checkState() == pCheckState && ui->checkBox_6->checkState() == pCheckState && ui->checkBox_9->checkState() == pCheckState)
-        {
-            gameEnded(ui);
-
+            isEnde = gameEnded(ui);
         }
+    }
+    if (isEnde)
+    {
+        return;
     }
     if ( getPlayableFields() == 0)
     {
@@ -295,8 +252,6 @@ void CTicTacToe::checkGameState(Ui::CMainWindow *ui, QObject *sender)
     {
         (getPlayerPlay() == 1) ? setPlayerPlay(2, ui) : setPlayerPlay(1, ui);
     }
-
-
 
 }
 

@@ -74,9 +74,10 @@ void CMainWindow::on_checkBoxSymbol2_clicked()
     /*
      *Slot von checkBoxSymbol2:
      *Setzt checkBoxSymbol2 auf Hacken oder Box, niemals unchecked.
-     *Setzt checkBoxSymbol1 auf das ENtgegengesetzte von checkBoxSymbol1
+     *Setzt checkBoxSymbol1 auf das Entgegengesetzte von checkBoxSymbol1
      *
      */
+
     if (ui->checkBoxSymbol2->checkState() == Qt::PartiallyChecked
             || ui->checkBoxSymbol2->checkState() == Qt::Unchecked) {
 

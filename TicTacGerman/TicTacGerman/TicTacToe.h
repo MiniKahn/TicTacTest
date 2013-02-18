@@ -29,7 +29,7 @@ public:
     void setPlayableFields(int pAnzahl);
     int getPlayableFields();
     void toggleGameField(Ui::CMainWindow* ui);
-    void gameEnded(Ui::CMainWindow* ui, bool pDraw = false);
+    bool gameEnded(Ui::CMainWindow* ui, bool pDraw = false);
 
 
     void checkGameState(Ui::CMainWindow* ui, QObject* sender);
