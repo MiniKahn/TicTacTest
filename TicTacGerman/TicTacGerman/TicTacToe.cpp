@@ -1,67 +1,66 @@
 #include "TicTacToe.h"
-CTicTacToe::CTicTacToe(QObject *parent) :
+CTicTacToe::CTicTacToe(Ui::CMainWindow *ui,  QObject *parent) :
     QObject(parent)
 {
+    this->userInterface = ui;
 }
 
 
-int CTicTacToe::startGame(Ui::CMainWindow* ui)
+void CTicTacToe::startGame()
 {
     /*
-     *Param1: Pointer zu ui.
      *
      *Bereitet Spielfeld zum Spielen vor.
      *
      */
-    setIsStated(false);
-    ui->checkBox_1->setEnabled(false);
-    ui->checkBox_2->setEnabled(false);
-    ui->checkBox_3->setEnabled(false);
-    ui->checkBox_4->setEnabled(false);
-    ui->checkBox_5->setEnabled(false);
-    ui->checkBox_6->setEnabled(false);
-    ui->checkBox_7->setEnabled(false);
-    ui->checkBox_8->setEnabled(false);
-    ui->checkBox_9->setEnabled(false);
-    return 0;
+    releasePlayerNamesAndSymbols();
+    disableGameFields();
 }
 
-bool CTicTacToe::gameEnded(Ui::CMainWindow* ui, bool pDraw)
+void CTicTacToe::gameEnded(bool pDraw)
 {
-    /*
-     *Param1: Pointer zu ui
-     *Optional Param2: ob Spiel Unentschieden Endete ( 0 / 9 Felder frei )
+    /**
+     *Disabled Spielfeld. And send win message.
+     *@param: Optional: Ob Spiel Unentschieden Endete ( 0 / 9 Felder frei )
      *
-     *Disabled Spielfeld.
-     *return true;
      */
-    toggleGameField(ui);
-    ui->textEditLog->clear();
-    ui->textEditLog->append("----------- Das Spiel ist zu Ende -------------");
+    toggleGameField();
+    this->userInterface->textEditLog->clear();
+    this->userInterface->textEditLog->append("----------- Das Spiel ist zu Ende -------------");
     if (!pDraw)
     {
-        ui->textEditLog->append(getPlayerName(getPlayerPlay()) + " hat gewonnen!");
+        this->userInterface->textEditLog->append(getPlayerName(getPlayerPlay()) + " hat gewonnen!");
     } else {
-        ui->textEditLog->append("Das Spiel Endet Unentschieden!");
+        this->userInterface->textEditLog->append("Das Spiel Endet Unentschieden!");
     }
     setIsStated(false);
-    return true;
 }
 
 bool CTicTacToe::getIsStarted()
 {
-    return isStarted;
+    return started;
 }
 
 void CTicTacToe::setIsStated(bool pIsStarted)
 {
-    isStarted = pIsStarted;
+    started = pIsStarted;
 }
 
-void CTicTacToe::setPlayerPlay(int pNumber, Ui::CMainWindow* ui)
+bool CTicTacToe::isStarted()
 {
+
+    if (getIsStarted() == true) {
+        return true;
+    }
+
+    return false;
+}
+
+void CTicTacToe::setPlayerPlay(int pNumber)
+{
+
     playerPlay = pNumber;
-    ui->textEditLog->append(getPlayerName(pNumber) + " ist nun am Zug. Mit Symbol: " + getPlayerCheckBoxStateString(pNumber));
+    this->userInterface->textEditLog->append(getPlayerName(pNumber) + " ist nun am Zug. Mit Symbol: " + getPlayerCheckBoxStateString(pNumber));
 
 }
 
@@ -90,7 +89,7 @@ QString CTicTacToe::getPlayerName(int pNumber)
     } else if (pNumber == 2) {
         return playerName2;
     }
-    return 0;
+    return "";
 }
 
 void CTicTacToe::setPlayerCheckBoxState(int pNumber, Qt::CheckState pCheckState)
@@ -117,8 +116,8 @@ Qt::CheckState CTicTacToe::getPlayerCheckBoxState(int pNumber)
 
 QString CTicTacToe::getPlayerCheckBoxStateString(int pNumber)
 {
-    /*
-     *Param1: pNumber
+    /**
+     *@param: pNumber
      *
      *return Symbol als String
      */
@@ -149,213 +148,242 @@ int CTicTacToe::getPlayableFields()
     return playableFields;
 }
 
-void CTicTacToe::checkGameState(Ui::CMainWindow *ui, QObject *sender)
+/**
+ * Check state of the active game
+ *
+ * @param Ui      Pointer zu ui
+ * @param QObject Clicked Object ( Sender von Slot )
+ */
+void CTicTacToe::checkGameState( QObject *sender)
 {
-    /*
-     *Param1: Pointer zu ui
-     *Param2: Clicked Object ( Sender von Slot )
-     *
-     *
-     *Checkt ob 3 in einer Reihe
-     *Check ob das Spiel noch Spielbar ist ( X > 0)
-     *Toggle Player wenn noch keiner Gewonnen und ist Spielbar.
-     *
-     */
-    QCheckBox* box = static_cast<QCheckBox*>(sender);
-    Qt::CheckState pCheckState = getPlayerCheckBoxState(getPlayerPlay());
+    if (!checkThreeInARow(sender))
+    {
+        if (hasFreeFields())
+        {
+            switchToNextPlayer();
+        }
+    }
+}
 
+bool CTicTacToe::checkThreeInARow( QObject* sender)
+{
+    int player = getPlayerPlay();
+    setCheckBoxCheckedForPlayer(sender, player);
+
+    if (hasThreeInARow(player)) {
+        gameEnded();
+        return true;
+    }
+
+
+    setPlayableFields(getPlayableFields()-1);
+    return false;
+}
+
+void CTicTacToe::setCheckBoxCheckedForPlayer(QObject* sender, int player)
+{
+    /**
+     * @param: QObject sender: Object to the pressed Checkbox
+     * @param: int player: Player who play
+     */
+
+    Qt::CheckState pCheckState = getPlayerCheckBoxState(player);
+    QCheckBox* box = static_cast<QCheckBox*>(sender);
     box->setCheckState(pCheckState);
     box->setEnabled(false);
-    setPlayableFields(getPlayableFields()-1);
+}
 
-    QString senderName = sender->objectName();
-    bool isEnde = false;
-    if (senderName == ui->checkBox_1->objectName())
-    {
-        if (ui->checkBox_1->checkState() == pCheckState && ui->checkBox_2->checkState() == pCheckState && ui->checkBox_3->checkState() == pCheckState ||
-            ui->checkBox_1->checkState() == pCheckState && ui->checkBox_5->checkState() == pCheckState && ui->checkBox_9->checkState() == pCheckState ||
-            ui->checkBox_1->checkState() == pCheckState && ui->checkBox_4->checkState() == pCheckState && ui->checkBox_7->checkState() == pCheckState  )
-        {
-           isEnde = gameEnded(ui);
-        }
-    } else if (senderName == ui->checkBox_2->objectName())
-    {
-        if (ui->checkBox_1->checkState() == pCheckState && ui->checkBox_2->checkState() == pCheckState && ui->checkBox_3->checkState() == pCheckState ||
-            ui->checkBox_2->checkState() == pCheckState && ui->checkBox_5->checkState() == pCheckState && ui->checkBox_8->checkState() == pCheckState  )
-        {
-           isEnde = gameEnded(ui);
-        }
-    } else if (senderName == ui->checkBox_3->objectName())
-    {
-        if (ui->checkBox_1->checkState() == pCheckState && ui->checkBox_2->checkState() == pCheckState && ui->checkBox_3->checkState() == pCheckState ||
-            ui->checkBox_3->checkState() == pCheckState && ui->checkBox_6->checkState() == pCheckState && ui->checkBox_9->checkState() == pCheckState ||
-            ui->checkBox_3->checkState() == pCheckState && ui->checkBox_5->checkState() == pCheckState && ui->checkBox_7->checkState() == pCheckState  )
-        {
-            isEnde = gameEnded(ui);
-        }
-    } else if (senderName == ui->checkBox_4->objectName())
-    {
-        if (ui->checkBox_1->checkState() == pCheckState && ui->checkBox_4->checkState() == pCheckState && ui->checkBox_7->checkState() == pCheckState ||
-            ui->checkBox_4->checkState() == pCheckState && ui->checkBox_5->checkState() == pCheckState && ui->checkBox_6->checkState() == pCheckState  )
-        {
-            isEnde = gameEnded(ui);
+bool CTicTacToe::hasThreeInARow(int player)
+{
+    // TODO: isChecked(checkBox_3);
 
-        }
-    } else if (senderName == ui->checkBox_5->objectName())
-    {
-        if (ui->checkBox_4->checkState() == pCheckState && ui->checkBox_5->checkState() == pCheckState && ui->checkBox_6->checkState() == pCheckState ||
-            ui->checkBox_1->checkState() == pCheckState && ui->checkBox_5->checkState() == pCheckState && ui->checkBox_9->checkState() == pCheckState ||
-            ui->checkBox_3->checkState() == pCheckState && ui->checkBox_5->checkState() == pCheckState && ui->checkBox_7->checkState() == pCheckState  )
-        {
-            isEnde = gameEnded(ui);
-        }
-    } else if (senderName == ui->checkBox_6->objectName())
-    {
-        if (ui->checkBox_4->checkState() == pCheckState && ui->checkBox_5->checkState() == pCheckState && ui->checkBox_6->checkState() == pCheckState ||
-            ui->checkBox_3->checkState() == pCheckState && ui->checkBox_6->checkState() == pCheckState && ui->checkBox_9->checkState() == pCheckState)
-        {
-            isEnde = gameEnded(ui);
-        }
-    } else if (senderName == ui->checkBox_7->objectName())
-    {
-        if (ui->checkBox_7->checkState() == pCheckState && ui->checkBox_8->checkState() == pCheckState && ui->checkBox_9->checkState() == pCheckState ||
-            ui->checkBox_1->checkState() == pCheckState && ui->checkBox_4->checkState() == pCheckState && ui->checkBox_7->checkState() == pCheckState ||
-            ui->checkBox_3->checkState() == pCheckState && ui->checkBox_5->checkState() == pCheckState && ui->checkBox_7->checkState() == pCheckState )
-        {
-            isEnde = gameEnded(ui);
-        }
-    } else if (senderName == ui->checkBox_8->objectName())
-    {
-        if (ui->checkBox_7->checkState() == pCheckState && ui->checkBox_8->checkState() == pCheckState && ui->checkBox_9->checkState() == pCheckState ||
-            ui->checkBox_2->checkState() == pCheckState && ui->checkBox_5->checkState() == pCheckState && ui->checkBox_8->checkState() == pCheckState)
-        {
-            isEnde = gameEnded(ui);
-        }
-    } else if (senderName == ui->checkBox_9->objectName())
-    {
-        if (ui->checkBox_7->checkState() == pCheckState && ui->checkBox_8->checkState() == pCheckState && ui->checkBox_9->checkState() == pCheckState ||
-            ui->checkBox_1->checkState() == pCheckState && ui->checkBox_5->checkState() == pCheckState && ui->checkBox_9->checkState() == pCheckState ||
-            ui->checkBox_3->checkState() == pCheckState && ui->checkBox_6->checkState() == pCheckState && ui->checkBox_9->checkState() == pCheckState)
-        {
-            isEnde = gameEnded(ui);
-        }
+    Qt::CheckState pCheckState = getPlayerCheckBoxState(player);
+
+    if (this->userInterface->checkBox_1->checkState() == pCheckState && this->userInterface->checkBox_2->checkState() == pCheckState && this->userInterface->checkBox_3->checkState() == pCheckState) {
+        return true;
     }
-    if (isEnde)
-    {
-        return;
+    if (this->userInterface->checkBox_4->checkState() == pCheckState && this->userInterface->checkBox_5->checkState() == pCheckState && this->userInterface->checkBox_6->checkState() == pCheckState) {
+        return true;
     }
+
+    if (this->userInterface->checkBox_7->checkState() == pCheckState && this->userInterface->checkBox_8->checkState() == pCheckState && this->userInterface->checkBox_9->checkState() == pCheckState) {
+        return true;
+    }
+
+    if (this->userInterface->checkBox_1->checkState() == pCheckState && this->userInterface->checkBox_4->checkState() == pCheckState && this->userInterface->checkBox_7->checkState() == pCheckState) {
+        return true;
+    }
+
+    if (this->userInterface->checkBox_2->checkState() == pCheckState && this->userInterface->checkBox_5->checkState() == pCheckState && this->userInterface->checkBox_8->checkState() == pCheckState) {
+        return true;
+    }
+
+    if (this->userInterface->checkBox_3->checkState() == pCheckState && this->userInterface->checkBox_6->checkState() == pCheckState && this->userInterface->checkBox_9->checkState() == pCheckState) {
+        return true;
+    }
+
+    if (this->userInterface->checkBox_1->checkState() == pCheckState && this->userInterface->checkBox_5->checkState() == pCheckState && this->userInterface->checkBox_9->checkState() == pCheckState) {
+        return true;
+    }
+
+    if (this->userInterface->checkBox_3->checkState() == pCheckState && this->userInterface->checkBox_5->checkState() == pCheckState && this->userInterface->checkBox_7->checkState() == pCheckState) {
+        return true;
+    }
+
+    return false;
+}
+
+
+
+bool CTicTacToe::hasFreeFields()
+{
     if ( getPlayableFields() == 0)
     {
-        gameEnded(ui, true);
+        gameEnded(true);
+        return false;
     }
-    if ( getIsStarted() == true)
-    {
-        (getPlayerPlay() == 1) ? setPlayerPlay(2, ui) : setPlayerPlay(1, ui);
-    }
-
+    return true;
 }
 
-void CTicTacToe::toggleGameField(Ui::CMainWindow* ui)
+void CTicTacToe::switchToNextPlayer()
 {
-    /*
-     *Param1: Pointer zu ui
-     *
-     *
-     *Wenn Spiel noch nicht angefangen: Checke ob alle Felder ausgefüllt
-     *wenn ja, Bereite Spielfeld und Spiel vor.
-     *
-     *Wenn schon begonnen, beende Spiel.
-     */
-    if (getIsStarted() == false) {
-        if ( ui->lineEditName1->text().isEmpty() == true ||
-             ui->lineEditName2->text().isEmpty() == true ||
-             ui->checkBoxSymbol1->checkState() == Qt::Unchecked ) {
-            MessageBox(NULL, L"Eines der Objekte wurde nicht ausgefüllt.", L"Error!", MB_ICONERROR);
-            return;
-        }
-            ui->lineEditName1->setReadOnly(true);
-            ui->lineEditName1->setEnabled(false);
+    if (isStarted())
+    {
+        (getPlayerPlay() == SPIELER_1) ? setPlayerPlay(SPIELER_2) : setPlayerPlay(SPIELER_1);
+    }
+}
 
-            ui->lineEditName2->setReadOnly(true);
-            ui->lineEditName2->setEnabled(false);
-
-            ui->checkBoxSymbol1->setEnabled(false);
-            ui->checkBoxSymbol2->setEnabled(false);
+void CTicTacToe::toggleGameField()
+{
 
 
-            ui->checkBox_1->setEnabled(true);
-            ui->checkBox_1->setChecked(false);
-
-            ui->checkBox_2->setEnabled(true);
-            ui->checkBox_2->setChecked(false);
-
-            ui->checkBox_3->setEnabled(true);
-            ui->checkBox_3->setChecked(false);
-
-            ui->checkBox_4->setEnabled(true);
-            ui->checkBox_4->setChecked(false);
-
-            ui->checkBox_5->setEnabled(true);
-            ui->checkBox_5->setChecked(false);
-
-            ui->checkBox_6->setEnabled(true);
-            ui->checkBox_6->setChecked(false);
-
-            ui->checkBox_7->setEnabled(true);
-            ui->checkBox_7->setChecked(false);
-
-            ui->checkBox_8->setEnabled(true);
-            ui->checkBox_8->setChecked(false);
-
-            ui->checkBox_9->setEnabled(true);
-            ui->checkBox_9->setChecked(false);
-
-            ui->pushButtonSave->setText("Spiel Beenden");
-
-            setPlayerName(1, ui->lineEditName1->text());
-            setPlayerName(2, ui->lineEditName2->text());
-            setPlayerCheckBoxState(1, ui->checkBoxSymbol1->checkState());
-            setPlayerCheckBoxState(2, ui->checkBoxSymbol2->checkState());
-
-            ui->textEditLog->clear();
-            ui->textEditLog->append("Das Spiel kann beginnen...");
-            ui->textEditLog->append("Informationen ueber Spieler Nummer 1:\nSpieler Name: " + getPlayerName(1) + "\nSpieler Symbol: " + getPlayerCheckBoxStateString(1) + "\n");
-            ui->textEditLog->append("Informationen ueber Spieler Nummer 2:\nSpieler Name: " + getPlayerName(2) + "\nSpieler Symbol: " + getPlayerCheckBoxStateString(2)+ "\n");
-
-            setPlayableFields(9);
-            setIsStated(true);
-            setPlayerPlay(1, ui);
+    if (!isStarted()) {
+        toggleStartedGameField();
     } else {
-
-        setIsStated(false);
-
-        ui->checkBox_1->setEnabled(false);
-        ui->checkBox_2->setEnabled(false);
-        ui->checkBox_3->setEnabled(false);
-        ui->checkBox_4->setEnabled(false);
-        ui->checkBox_5->setEnabled(false);
-        ui->checkBox_6->setEnabled(false);
-        ui->checkBox_7->setEnabled(false);
-        ui->checkBox_8->setEnabled(false);
-        ui->checkBox_9->setEnabled(false);
-        ui->lineEditName1->clear();
-        ui->lineEditName2->clear();
-        ui->checkBoxSymbol1->setCheckState(Qt::Unchecked);
-        ui->checkBoxSymbol2->setCheckState(Qt::Unchecked);
-
-        ui->lineEditName1->setReadOnly(false);
-        ui->lineEditName1->setEnabled(true);
-
-        ui->lineEditName2->setReadOnly(false);
-        ui->lineEditName2->setEnabled(true);
-
-        ui->checkBoxSymbol1->setEnabled(true);
-        ui->checkBoxSymbol2->setEnabled(true);
-
-        ui->textEditLog->append("Das Spiel wurde beendet.");
-        ui->pushButtonSave->setText("Save && GO");
-
+        togglePausedGameField();
     }
 }
 
 
+
+void CTicTacToe::disableGameFields()
+{
+    this->userInterface->checkBox_1->setEnabled(false);
+    this->userInterface->checkBox_2->setEnabled(false);
+    this->userInterface->checkBox_3->setEnabled(false);
+    this->userInterface->checkBox_4->setEnabled(false);
+    this->userInterface->checkBox_5->setEnabled(false);
+    this->userInterface->checkBox_6->setEnabled(false);
+    this->userInterface->checkBox_7->setEnabled(false);
+    this->userInterface->checkBox_8->setEnabled(false);
+    this->userInterface->checkBox_9->setEnabled(false);
+}
+
+void CTicTacToe::enableGameFields()
+
+{
+    this->userInterface->checkBox_1->setEnabled(true);
+    this->userInterface->checkBox_3->setEnabled(true);
+    this->userInterface->checkBox_2->setEnabled(true);
+    this->userInterface->checkBox_4->setEnabled(true);
+    this->userInterface->checkBox_5->setEnabled(true);
+    this->userInterface->checkBox_6->setEnabled(true);
+    this->userInterface->checkBox_7->setEnabled(true);
+    this->userInterface->checkBox_8->setEnabled(true);
+    this->userInterface->checkBox_9->setEnabled(true);
+}
+
+
+void CTicTacToe::resetGameFields()
+{
+    this->userInterface->checkBox_1->setChecked(false);
+    this->userInterface->checkBox_2->setChecked(false);
+    this->userInterface->checkBox_3->setChecked(false),
+    this->userInterface->checkBox_4->setChecked(false);
+    this->userInterface->checkBox_5->setChecked(false);
+    this->userInterface->checkBox_6->setChecked(false);
+    this->userInterface->checkBox_7->setChecked(false);
+    this->userInterface->checkBox_8->setChecked(false);
+    this->userInterface->checkBox_9->setChecked(false);
+}
+
+void CTicTacToe::freezePlayerNamesAndSymbols()
+{
+    this->userInterface->lineEditName1->setReadOnly(true);
+    this->userInterface->lineEditName1->setEnabled(false);
+
+    this->userInterface->lineEditName2->setReadOnly(true);
+    this->userInterface->lineEditName2->setEnabled(false);
+
+    this->userInterface->checkBoxSymbol1->setEnabled(false);
+    this->userInterface->checkBoxSymbol2->setEnabled(false);
+}
+
+void CTicTacToe::releasePlayerNamesAndSymbols()
+{
+    this->userInterface->lineEditName1->setReadOnly(false);
+    this->userInterface->lineEditName1->setEnabled(true);
+
+    this->userInterface->lineEditName2->setReadOnly(false);
+    this->userInterface->lineEditName2->setEnabled(true);
+
+    this->userInterface->checkBoxSymbol1->setEnabled(true);
+    this->userInterface->checkBoxSymbol2->setEnabled(true);
+}
+
+void CTicTacToe::resetPlayerNamesAndSymbols()
+{
+    this->userInterface->lineEditName1->clear();
+    this->userInterface->lineEditName2->clear();
+    this->userInterface->checkBoxSymbol1->setCheckState(Qt::Unchecked);
+    this->userInterface->checkBoxSymbol2->setCheckState(Qt::Unchecked);
+}
+
+void CTicTacToe::toggleStartedGameField()
+{
+    if ( this->userInterface->lineEditName1->text().isEmpty() == true ||
+         this->userInterface->lineEditName2->text().isEmpty() == true ||
+         this->userInterface->checkBoxSymbol1->checkState() == Qt::Unchecked ) {
+        MessageBox(NULL, L"Eines der Objekte wurde nicht ausgefüllt.", L"Error!", MB_ICONERROR);
+        return;
+    }
+
+
+    setPlayerNamesFromUi();
+    this->userInterface->textEditLog->clear();
+    this->userInterface->textEditLog->append("Das Spiel kann beginnen...");
+    this->userInterface->textEditLog->append("Informationen ueber SPIELER_ Nummer 1:\nSPIELER_ Name: " + getPlayerName(SPIELER_1) + "\nSPIELER_ Symbol: " + getPlayerCheckBoxStateString(SPIELER_1) + "\n");
+    this->userInterface->textEditLog->append("Informationen ueber SPIELER_ Nummer 2:\nSPIELER_ Name: " + getPlayerName(SPIELER_2) + "\nSPIELER_ Symbol: " + getPlayerCheckBoxStateString(SPIELER_2)+ "\n");
+
+    this->userInterface->pushButtonSave->setText("Spiel Beenden");
+
+
+    freezePlayerNamesAndSymbols();
+    resetGameFields();
+    setPlayableFields(ALL_FIELDS);
+    enableGameFields();
+    setIsStated(true);
+    setPlayerPlay(SPIELER_1);
+}
+
+void CTicTacToe::togglePausedGameField()
+{
+    setIsStated(false);
+
+    disableGameFields();
+    resetPlayerNamesAndSymbols();
+    releasePlayerNamesAndSymbols();
+
+    this->userInterface->textEditLog->append("Das Spiel wurde beendet.");
+    this->userInterface->pushButtonSave->setText("Save && GO");
+}
+
+
+void CTicTacToe::setPlayerNamesFromUi()
+{
+
+    setPlayerName(SPIELER_1, this->userInterface->lineEditName1->text());
+    setPlayerName(SPIELER_2, this->userInterface->lineEditName2->text());
+    setPlayerCheckBoxState(SPIELER_1, this->userInterface->checkBoxSymbol1->checkState());
+    setPlayerCheckBoxState(SPIELER_2, this->userInterface->checkBoxSymbol2->checkState());
+}

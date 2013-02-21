@@ -5,7 +5,6 @@
 #include <QString>
 #include <QLineEdit>
 #include "TicTacToe.h"
-#include "MainWindowFormFuncs.h"
 #include "stdafx.h"
 
 namespace Ui {
@@ -20,7 +19,8 @@ public:
     explicit CMainWindow(QWidget *parent = 0);
     ~CMainWindow();
     CTicTacToe* getTicTacToeInstance();
-    CMainWindowFormFuncs* getMWFFInstace();
+    void setTicTacToeInstance(CTicTacToe *ticTacToeInstance);
+
 private slots:
 
     void on_pushButtonSave_clicked();
@@ -30,11 +30,10 @@ private slots:
     void on_checkBoxSymbol1_clicked();
 
     void on_checkBoxSymbol2_clicked();
-
 private:
     Ui::CMainWindow *ui;
-    CTicTacToe ticTacToeInstance;
-    CMainWindowFormFuncs mainWindowFormFuncsInstance;
+
+    CTicTacToe *ticTacToeInstance;
 };
 
 #endif // MAINWINDOW_H

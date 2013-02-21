@@ -4,10 +4,14 @@ CMainWindow::CMainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::CMainWindow)
 {
+
     ui->setupUi(this);
     ui->textEditLog->setReadOnly(true);
     ui->textEditLog->append("Willkommen bei TicTacToe von MiniKahn");
-    getTicTacToeInstance()->startGame(ui);
+
+    this->ticTacToeInstance = new CTicTacToe(ui);
+
+    getTicTacToeInstance()->startGame();
 
 }
 
@@ -15,19 +19,23 @@ CMainWindow::CMainWindow(QWidget *parent) :
 CMainWindow::~CMainWindow()
 {
     delete ui;
+    delete ticTacToeInstance;
 }
 
 
-CMainWindowFormFuncs* CMainWindow::getMWFFInstace()
-{
-    return &mainWindowFormFuncsInstance;
-}
 
 CTicTacToe* CMainWindow::getTicTacToeInstance()
 {
-    return &ticTacToeInstance;
+    return ticTacToeInstance;
 }
 
+void CMainWindow::setTicTacToeInstance(CTicTacToe *instance)
+{
+    /**
+     * @unused:
+     */
+    this->ticTacToeInstance = instance;
+}
 
 void CMainWindow::on_pushButtonSave_clicked()
 {
@@ -35,7 +43,7 @@ void CMainWindow::on_pushButtonSave_clicked()
      *Slot von pushButtonSave:
      *Beendet oder Startet das Spiel.
      */
-    getTicTacToeInstance()->toggleGameField(ui);
+    getTicTacToeInstance()->toggleGameField();
 }
 
 void CMainWindow::selectedCheckBoxCheck()
@@ -45,7 +53,7 @@ void CMainWindow::selectedCheckBoxCheck()
      *
      *Checkt Spielfeld ob gewonnen oder unentschieden.
      */
-    getTicTacToeInstance()->checkGameState(ui, QObject::sender());
+    getTicTacToeInstance()->checkGameState( QObject::sender());
 
 }
 

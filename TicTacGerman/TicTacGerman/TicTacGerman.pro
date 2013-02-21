@@ -14,11 +14,9 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         MainWindow.cpp \
-    MainWindowFormFuncs.cpp \
     TicTacToe.cpp
 
 HEADERS  += MainWindow.h \
-    MainWindowFormFuncs.h \
     TicTacToe.h \
     stdafx.h
 
