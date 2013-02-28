@@ -4,25 +4,32 @@
 #include <QObject>
 #include "stdafx.h"
 #include "ui_MainWindow.h"
+#include "MainWindow.h"
+
+#include "ui_options.h"
+#include "options.h"
 #define SPIELER_1 1
 #define SPIELER_2 2
 #define ALL_FIELDS 9
+
 class CTicTacToe : public QObject
 {
     Q_OBJECT
 public:
-    explicit CTicTacToe(Ui::CMainWindow *ui, QObject *parent = 0);
+    explicit CTicTacToe(QObject *parent = 0);
+
     void startGame();
+    void checkGameState(QObject* sender);
 
     bool getIsStarted();
     void setIsStated(bool pIsStarted);
+    bool isStarted();
 
     void setPlayerName(int, QString);
     QString getPlayerName(int pNumber);
 
     void setPlayerCheckBoxState(int, Qt::CheckState);
     Qt::CheckState getPlayerCheckBoxState(int pNumber);
-
     QString getPlayerCheckBoxStateString(int pNumber);
 
     int getPlayerPlay();
@@ -35,24 +42,31 @@ public:
     void gameEnded( bool pDraw = false);
 
 
+    bool hasThreeInARow(int player);
     bool checkThreeInARow( QObject* sender);
     bool hasFreeFields();
+
     void switchToNextPlayer();
-    bool hasThreeInARow(int player);
     void setCheckBoxCheckedForPlayer(QObject* sender, int player);
-    void checkGameState(QObject* sender);
-    bool isStarted();
+
     void disableGameFields();
     void enableGameFields();
     void resetGameFields();
+
     void freezePlayerNamesAndSymbols();
     void releasePlayerNamesAndSymbols();
     void resetPlayerNamesAndSymbols();
+
     void toggleStartedGameField();
     void togglePausedGameField();
+
+    bool checkAllFieldsFilled();
 signals:
     
 public slots:
+
+private slots:
+
 
 private:
     bool started;
@@ -63,7 +77,8 @@ private:
     Qt::CheckState playerCheckBoxState2;
 
     int playerPlay;
-    Ui::CMainWindow *userInterface;
+    CMainWindow *main;
+    Options *options;
 };
 
 #endif // TICTACTOE_H

@@ -4,4 +4,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <QMessageBox>
+#include <QString>
+#include <QDebug>
+#include <QSettings>
+
+
+class CMainWindow;
+class Options;
+class CTicTacToe;
 #endif // STDAFX_H

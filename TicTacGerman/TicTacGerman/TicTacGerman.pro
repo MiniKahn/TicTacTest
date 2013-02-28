@@ -14,10 +14,13 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         MainWindow.cpp \
-    TicTacToe.cpp
+    TicTacToe.cpp \
+    options.cpp
 
 HEADERS  += MainWindow.h \
     TicTacToe.h \
-    stdafx.h
+    stdafx.h \
+    options.h
 
-FORMS    += MainWindow.ui
+FORMS    += MainWindow.ui \
+    options.ui
